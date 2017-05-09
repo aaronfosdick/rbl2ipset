@@ -20,7 +20,7 @@ printf '%s\n' "${iplist[@]}"  |grep -v "#"|grep  -v "<" |grep -v '^$'|sort|uniq 
 # whitelist my Public IP address in the event it makes the list
 ## sed -i 's/a.b.c.d//g' /tmp/ipblocklist
  
-# Create ipset list
+# Create ipset list and set to expire in one week
 if [ `ipset list -n|grep -c blocklist` == 0 ]; then
          ipset create blocklist hash:ip maxelem 98304 timeout 604800
 fi
@@ -32,5 +32,5 @@ if [ `iptables -L|grep -c IPBLOCKLIST` == 0 ]; then
         iptables -A IPBLOCKLIST -m set --match-set blocklist src -j DROP
 fi
  
-# Import addresses and set to expire in one week
+# Import addresses - this takes a bit of time
 while read IP; do ipset add -exist blocklist $IP; done < /tmp/ipblocklist
