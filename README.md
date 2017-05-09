@@ -1,2 +1,2 @@
 # rbl2ipset
-Block malicious IPs using IPTables ipset
+Block malicious IPs using IPTables ipset hash
